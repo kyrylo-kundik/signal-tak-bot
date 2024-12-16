@@ -64,6 +64,12 @@ async def send_message(message: SignalMessage)
   - `message`: object containing message data to send
 - **Raises:** SignalClientError if sending fails
 
+#### Preferrable Usage (with context manager)
+```python
+async with SignalClient(config) as client:
+    await client.send_message(message)
+```
+
 ## TAK Client API
 
 ### Class: TakClient
@@ -90,3 +96,9 @@ async def send_point(point: GeoLocation)
 - **Parameters:**
   - `point`: GeoLocation object containing coordinates to send
 - **Raises:** TakClientError if sending fails
+
+#### Preferrable Usage (with context manager)
+```python
+async with TakClient(config) as client:
+    await client.send_point(point)
+```
