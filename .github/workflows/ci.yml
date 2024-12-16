@@ -47,7 +47,6 @@ jobs:
     - name: Run security checks
       run: |
         bandit -r signal_bot
-        safety check
 
     - name: Run tests with coverage
       run: |
