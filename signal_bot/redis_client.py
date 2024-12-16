@@ -16,7 +16,7 @@ import models
 class RedisClient:
     SIGNAL_QUEUE = "signal:messages"
     TAK_QUEUE = "tak:events"
-    DEAD_SIGNAL_QUEUE = "dead:signal:messages"
+    DEAD_LETTER_QUEUE = "dead:letter:messages"
 
     def __init__(self, config: config.RedisConfig):
         """Initialize Redis client for message queuing"""
