@@ -35,4 +35,4 @@ The Signal-TAK Bot is designed using clean architecture principles, implementing
 
 ## Data Flow Diagram
 
-![Data Flow Diagram](../images/data_flow_diagram.png)
+![Data Flow Diagram](../images/data_flow_diagram.jpg)
