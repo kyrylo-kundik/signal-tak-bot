@@ -4,8 +4,8 @@ from unittest.mock import AsyncMock, MagicMock
 import pytest
 import asyncio
 
-from signal_bot.config import SignalConfig, TakConfig, RedisConfig
-from signal_bot.models import GeoLocation, SignalMessage, CotEvent
+from config import SignalConfig, TakConfig, RedisConfig
+from models import GeoLocation, SignalMessage, CotEvent
 
 
 @pytest.fixture
@@ -15,7 +15,7 @@ def signal_config():
         phone_number="+1234567890",
         api_url="https://signal-api.example.com",
         recipients=["+1987654321", "+1234567899"],
-        max_reconnect_attempts=3
+        max_reconnect_attempts=3,
     )
 
 
@@ -23,21 +23,14 @@ def signal_config():
 def tak_config():
     """TAK client configuration fixture"""
     return TakConfig(
-        server_url="tak-server.example.com",
-        port=8087,
-        max_reconnect_attempts=3
+        server_url="tak-server.example.com", port=8087, max_reconnect_attempts=3
     )
 
 
 @pytest.fixture
 def redis_config():
     """Redis client configuration fixture"""
-    return RedisConfig(
-        host="localhost",
-        port=6379,
-        db=0,
-        password=None
-    )
+    return RedisConfig(host="localhost", port=6379, db=0, password=None)
 
 
 @pytest.fixture
@@ -50,16 +43,14 @@ def sample_geolocation():
         ce=45.0,
         le=45.0,
         description="Test Location",
-        timestamp=datetime.datetime.now(datetime.timezone.utc)
+        timestamp=datetime.datetime.now(datetime.timezone.utc),
     )
 
 
 @pytest.fixture
 def sample_signal_message(sample_geolocation):
     """Sample Signal message fixture"""
-    return SignalMessage(
-        geolocation=sample_geolocation
-    )
+    return SignalMessage(geolocation=sample_geolocation)
 
 
 @pytest.fixture
@@ -73,7 +64,7 @@ def sample_cot_event(sample_geolocation):
         stale=sample_geolocation.timestamp + datetime.timedelta(minutes=5),
         how="m-g",
         point=sample_geolocation,
-        status="pending"
+        status="pending",
     )
 
 
@@ -125,16 +116,14 @@ def sample_geolocation_fixed(fixed_datetime):
         ce=45.0,
         le=45.0,
         description="Test Location",
-        timestamp=fixed_datetime
+        timestamp=fixed_datetime,
     )
 
 
 @pytest.fixture
 def sample_signal_message_fixed(sample_geolocation_fixed):
     """Sample Signal message with fixed datetime for consistent testing"""
-    return SignalMessage(
-        geolocation=sample_geolocation_fixed
-    )
+    return SignalMessage(geolocation=sample_geolocation_fixed)
 
 
 @pytest.fixture
@@ -148,5 +137,5 @@ def sample_cot_event_fixed(sample_geolocation_fixed, fixed_datetime):
         stale=fixed_datetime + datetime.timedelta(minutes=5),
         how="m-g",
         point=sample_geolocation_fixed,
-        status="pending"
-    ) 
+        status="pending",
+    )
