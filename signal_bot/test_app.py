@@ -27,9 +27,9 @@ async def main():
         for geolocation in generate_geolocation():
             await redis.enqueue_tak_events(formatter.create_event(geolocation))
 
-            # await redis.enqueue_signal_messages(
-            # models.SignalMessage(geolocation=geolocation)
-            # )
+            await redis.enqueue_signal_messages(
+                models.SignalMessage(geolocation=geolocation)
+            )
 
             await asyncio.sleep(random.uniform(0.1, 5.0))
 
