@@ -20,6 +20,7 @@ class TakConfig:
     server_url: str
     port: int
     max_reconnect_attempts: int = 3
+    connection_timeout: int = 10
 
 
 @dataclasses.dataclass
@@ -58,7 +59,7 @@ def load_config() -> AppConfig:
             host=os.environ.get("REDIS_HOST", "localhost"),
             port=int(os.environ.get("REDIS_PORT", "6379")),
             password=os.environ.get("REDIS_PASSWORD"),
-            db=int(os.environ.get("REDIS_DB", "0"))
+            db=int(os.environ.get("REDIS_DB", "0")),
         )
 
         return AppConfig(
@@ -66,11 +67,13 @@ def load_config() -> AppConfig:
             tak=tak_config,
             redis=redis_config,
             log_level=os.environ.get("LOG_LEVEL", "INFO"),
-            log_file=os.environ.get("LOG_FILE", "./logs/app.log")
+            log_file=os.environ.get("LOG_FILE", "./logs/app.log"),
         )
 
     except KeyError as e:
-        raise exceptions.ConfigurationError(f"Missing required environment variable: {e}")
-    
+        raise exceptions.ConfigurationError(
+            f"Missing required environment variable: {e}"
+        )
+
     except ValueError as e:
         raise exceptions.ConfigurationError(f"Invalid configuration value: {e}")

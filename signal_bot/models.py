@@ -28,8 +28,10 @@ class SignalMessage(pydantic.BaseModel):
 
     @property
     def content(self) -> str:
-        return (f"{self.geolocation.lon} {self.geolocation.lat} "
-                f"{self.geolocation.description or 'Unknown'}")
+        return (
+            f"{self.geolocation.lon} {self.geolocation.lat} "
+            f"{self.geolocation.description or 'Unknown'}"
+        )
 
 
 class CotEvent(pydantic.BaseModel):

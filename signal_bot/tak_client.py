@@ -23,29 +23,32 @@ class TakClient:
 
     async def connect(self):
         retry_count = 0
-        
+
         while retry_count < self._cfg.max_reconnect_attempts:
-            self._logger.info(f"Connecting to TAK server at {self._cfg.server_url}:{self._cfg.port}")
+            self._logger.info(
+                f"Connecting to TAK server at {self._cfg.server_url}:{self._cfg.port}"
+            )
 
             try:
                 self._reader, self._writer = await asyncio.wait_for(
                     asyncio.open_connection(
-                        host=self._cfg.server_url,
-                        port=self._cfg.port
+                        host=self._cfg.server_url, port=self._cfg.port
                     ),
-                    timeout=self._cfg.connection_timeout
+                    timeout=self._cfg.connection_timeout,
                 )
                 self._logger.info("Successfully connected to TAK server")
                 return
 
             except (ConnectionError, asyncio.TimeoutError) as e:
                 self._logger.error(f"Connection attempt {retry_count} failed: {str(e)}")
-            
+
             retry_count += 1
-            
-            await asyncio.sleep(2 ** retry_count)
-        
-        raise exceptions.TakClientError("Failed to connect to TAK server after maximum attempts")
+
+            await asyncio.sleep(2**retry_count)
+
+        raise exceptions.TakClientError(
+            "Failed to connect to TAK server after maximum attempts"
+        )
 
     async def disconnect(self):
         if self._writer:
@@ -90,10 +93,7 @@ class TakClient:
 
 
 async def main():
-    cfg = config.TakConfig(
-        server_url="137.184.101.250",
-        port=8087
-    )
+    cfg = config.TakConfig(server_url="137.184.101.250", port=8087)
 
     async with TakClient(cfg) as client:
         point = models.GeoLocation(lat=40.781789, lon=-73.968698, hae=0, ce=0, le=0)

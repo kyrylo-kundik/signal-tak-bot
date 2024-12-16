@@ -7,18 +7,20 @@ import models
 
 class CotFormatter:
     EVENT_TYPES = {
-        "default": "a-u-G",       # Default: Unknown Ground
-        "hostile": "a-h-G",       # Hostile Ground
-        "friendly": "a-f-G",      # Friendly Ground
-        "unknown": "a-u-G",       # Unknown Ground
-        "emergency": "b-a-o-tbl", # Emergency/911
+        "default": "a-u-G",  # Default: Unknown Ground
+        "hostile": "a-h-G",  # Hostile Ground
+        "friendly": "a-f-G",  # Friendly Ground
+        "unknown": "a-u-G",  # Unknown Ground
+        "emergency": "b-a-o-tbl",  # Emergency/911
     }
     HOW_VALUES = {
-        "default": "m-g",         # GPS
-        "estimated": "h-e",       # Human Entry
-        "calculated": "h-c",      # Human Calculated
+        "default": "m-g",  # GPS
+        "estimated": "h-e",  # Human Entry
+        "calculated": "h-c",  # Human Calculated
     }
-    DEFAULT_XML_DECLARATION = b'<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>'
+    DEFAULT_XML_DECLARATION = (
+        b'<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>'
+    )
     DEFAULT_HOST_ID = "signal-bot"
     UUID_PREFIX = "signal:atak:bot"
 
@@ -88,11 +90,10 @@ class CotFormatter:
     def _format_datetime(self, dt: datetime.datetime) -> str:
         return dt.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
+
 if __name__ == "__main__":
     formatter = CotFormatter()
     event = formatter.create_event(
-        models.GeoLocation(
-            lat=40.7128, lon=-74.0060, hae=100, ce=100, le=100
-        )
+        models.GeoLocation(lat=40.7128, lon=-74.0060, hae=100, ce=100, le=100)
     )
     print(formatter.format_event(event))
