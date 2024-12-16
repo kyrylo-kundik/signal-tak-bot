@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  signal-worker:
+    build: .
+    env_file: .env
+    command: python signal_bot/signal_client.py
+    volumes:
+      - ./logs:/app/logs
+    depends_on:
+      - redis
+      - signal-rest
+    networks:
+      - signal-tak-network
+  
+  tak-worker:
+    build: .
+    env_file: .env
+    command: python signal_bot/pytak_client.py
+    volumes:
+      - ./logs:/app/logs
+    depends_on:
+      - redis
+    networks:
+      - signal-tak-network
+
+  test-app:
+    build: .
+    env_file: .env
+    command: python signal_bot/test_app.py
+    restart: "no"
+    volumes:
+      - ./logs:/app/logs
+    depends_on:
+      - redis
+      - tak-worker
+      - signal-worker
+    networks:
+      - signal-tak-network
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    networks:
+      - signal-tak-network
+  
+  signal-rest:
+    image: bbernhard/signal-cli-rest-api:latest
+    environment:
+      - MODE=normal #supported modes: json-rpc, native, normal
+    ports:
+      - 8080:8080
+    volumes:
+      - signal-data:/home/.local/share/signal-cli
+    networks:
+      - signal-tak-network
+
+volumes:
+  redis-data:
+  signal-data:
+
+networks:
+  signal-tak-network:
+    driver: bridge
